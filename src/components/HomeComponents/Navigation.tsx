@@ -1,5 +1,11 @@
 "use client";
-import { Moon, ChevronDown, ChevronRight, ChevronUp } from "lucide-react";
+import {
+  Moon,
+  ChevronDown,
+  ChevronRight,
+  ChevronUp,
+  Search,
+} from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import {
@@ -70,7 +76,7 @@ const Navigation = () => {
         </DropdownMenu>
 
         <div className="flex items-center gap-2.5 border px-3 rounded-md border-[#E4E4E7]">
-          <img src="./images/_magnifying-glass.png" alt="" className="h-4" />
+          <Search color="gray" />
           <input
             type="text"
             placeholder="Search...."

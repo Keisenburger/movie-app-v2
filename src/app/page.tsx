@@ -1,22 +1,29 @@
 import Footer from "@/components/HomeComponents/Footer";
+import MovieSection from "@/components/HomeComponents/MovieSection";
 import Navigation from "@/components/HomeComponents/Navigation";
 import Poster from "@/components/HomeComponents/Poster";
-import { posters } from "@/data/posters";
+const data = [
+  { title: "Upcoming", bottom: 0, route: "upcoming" },
+  { title: "Popular", bottom: 0, route: "popular" },
+  { title: "Top Rated", bottom: 0, route: "top_rated" },
+];
 const Home = () => {
   return (
     <div className="flex flex-col items-center">
       <Navigation></Navigation>
-      <section
-        className={`flex w-full h-[300px]  md:h-[400px]  lg:h-[500px] xl:h-[600px] 2xl:h-[750px] overflow-x-scroll no-scrollbar overflow-y-clip snap-x `}
-      >
-        {posters.map(({ title, description, imageLocation }) => {
+
+      <Poster></Poster>
+
+      <section className="flex flex-col gap-13 mt-8 ">
+        {data.map((section) => {
           return (
-            <Poster
-              key={title}
-              title={title}
-              description={description}
-              imageLocation={imageLocation}
-            />
+            <MovieSection
+              key={section.title}
+              title={section.title}
+              bottom={section.bottom}
+              route={section.route}
+              page={1}
+            ></MovieSection>
           );
         })}
       </section>
