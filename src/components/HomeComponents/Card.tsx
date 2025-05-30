@@ -1,6 +1,5 @@
 type MovieCard = { title: string; imageUrl: string; voteAverage: number };
-import { Star } from "lucide-react";
-import { ST } from "next/dist/shared/lib/utils";
+
 const Card = ({ title, imageUrl, voteAverage }: MovieCard) => {
   return (
     <div className="h-fit  rounded-md">

@@ -37,12 +37,13 @@ const MovieSection = ({ title, bottom, route, page }: Movie1) => {
       .then((response) => response.json())
       .then((data) => setMovies(data));
   };
+  console.log(movies);
 
   return (
     <div className=" flex  container flex-col gap-8 px-5">
       <div className="flex justify-between container items-center ">
         <p className=" font-semibold text-2xl">{title}</p>
-        <Link href={`/seeMore/${route}`}>
+        <Link href={`/see_more/${route}`}>
           <button className=" cursor-pointer flex items-center gap-2 px-4 py-2 ">
             <p>See more</p>
             <ArrowRight />
