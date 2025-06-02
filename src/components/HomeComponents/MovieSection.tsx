@@ -60,6 +60,7 @@ const MovieSection = ({ title, bottom, route, page }: Movie1) => {
                 title={movie.title}
                 voteAverage={movie.vote_average}
                 imageUrl={movie.poster_path}
+                id={movie.id}
               />
             );
           }

@@ -92,7 +92,3 @@ const Navigation = () => {
 };
 
 export default Navigation;
-<DropdownMenuItem className="bg-white text-black hover:bg-amber-50 border border-[#E4E4E7] w-fit">
-  <ChevronRight />
-  Action
-</DropdownMenuItem>;

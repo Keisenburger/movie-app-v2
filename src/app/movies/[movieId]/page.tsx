@@ -1,4 +1,3 @@
-"use client";
 type Movie = {
   title: string;
   release_date: string;
@@ -10,6 +9,7 @@ type Movie = {
   poster_path: string;
   genres: { id: number; name: string }[];
   overview: string;
+  production_companies: { id: number; name: string }[];
 };
 type SimiliarMovie = {
   id: number;
@@ -24,42 +24,37 @@ type MovieResponse = {
 };
 import Navigation from "@/components/HomeComponents/Navigation";
 import Footer from "@/components/HomeComponents/Footer";
-
-import { useEffect, useState } from "react";
-
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { ArrowRight } from "lucide-react";
 import Card from "@/components/HomeComponents/Card";
+import { DetailLoader } from "@/components/skeleton/Skeleton";
+import { useSecret } from "@/constants";
 
-const Details = () => {
-  const id = 96;
-  const [singleMovie, setSingleMovie] = useState<Movie>({});
-  const [similiarMovies, setSimiliarMovies] = useState<MovieResponse>({
-    results: [],
+const Details = async ({
+  params,
+}: {
+  params: Promise<{ movieId: string }>;
+}) => {
+  const { movieId } = await params;
+  const { singleMovieUrl, token, similiarMoviesUrl } = useSecret(movieId);
+
+  const singleMovieResponse = await fetch(singleMovieUrl, {
+    headers: { Authorization: `Bearer ${token}` },
   });
-  const singleMovieUrl = `https://api.themoviedb.org/3/movie/${id}?language=en-US`;
-  const similiarMoviesUrl = `https://api.themoviedb.org/3/movie/${id}/similar?language=en-US&page=1`;
-  const token =
-    "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNjdkOGJlYmQwZjRmZjM0NWY2NTA1Yzk5ZTlkMDI4OSIsIm5iZiI6MTc0MjE3NTA4OS4zODksInN1YiI6IjY3ZDc3YjcxODVkMTM5MjFiNTAxNDE1ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.KxFMnZppBdHUSz_zB4p9A_gRD16I_R6OX1oiEe0LbE8";
-  useEffect(() => {
-    fetchSingleMoviesingleMovie();
-    fetchSimiliarMoviesingleMovie();
-  }, []);
-  const fetchSingleMoviesingleMovie = () => {
-    fetch(singleMovieUrl, { headers: { Authorization: `Bearer ${token}` } })
-      .then((res) => res.json())
-      .then((data) => setSingleMovie(data));
-  };
-  const fetchSimiliarMoviesingleMovie = () => {
-    fetch(similiarMoviesUrl, { headers: { Authorization: `Bearer ${token}` } })
-      .then((res) => res.json())
-      .then((data) => setSimiliarMovies(data));
-  };
+  const singleMovie: Movie = await singleMovieResponse.json();
+
+  const similiarMoviesResponse = await fetch(similiarMoviesUrl, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const similiarMovies: MovieResponse = await similiarMoviesResponse.json();
+  console.log(singleMovie);
 
   return (
     <div className="flex flex-col items-center ">
       <Navigation></Navigation>
+      {singleMovie! && <DetailLoader></DetailLoader>}
+
       <section className="container flex flex-col gap-6">
         <div className="flex justify-between w-full">
           <div>
@@ -98,7 +93,7 @@ const Details = () => {
           />
           <img
             src={`https://image.tmdb.org/t/p/original${singleMovie.backdrop_path}`}
-            alt=""
+            alt={singleMovie.title}
             className="border w-full h-[500px]"
           />
         </div>
@@ -116,26 +111,19 @@ const Details = () => {
             })}
           </div>
           <p className="text-[16px] leading-6">{singleMovie.overview}</p>
+          <p className="text-[20px] font-bold ">Production Companies</p>
           <div>
-            <div className="flex gap-[53px]">
-              <p className="text-[16px] font-bold w-16">Director</p>
-              <p className="text-[16px]">Jon M. Chu</p>
-            </div>
-            <DropdownMenuSeparator className="my-4" />
-            <div className="flex gap-[53px]">
-              <p className="text-[16px] font-bold w-16">Writers</p>
-              <p className="text-[16px]">
-                Winnie Holzman · Dana Fox · Gregory Maguire
-              </p>
-            </div>
-            <DropdownMenuSeparator className="my-4" />
-            <div className="flex gap-[53px]">
-              <p className="text-[16px] font-bold w-16">Stars</p>
-              <p className="text-[16px]">
-                Cynthia Erivo · Ariana Grande · Jeff Goldblum
-              </p>
-            </div>
-            <DropdownMenuSeparator className="my-4" />
+            {singleMovie?.production_companies.map((company) => {
+              return (
+                <div key={company.id}>
+                  <div className="flex gap-[53px]">
+                    <p className="text-[16px] font-bold w-16">№{company.id}</p>
+                    <p className="text-[16px]">{company.name}</p>
+                  </div>
+                  <DropdownMenuSeparator className="my-4" />
+                </div>
+              );
+            })}
           </div>
         </div>
         <div className="flex flex-col gap-8">
@@ -156,15 +144,19 @@ const Details = () => {
                   title={movie.title}
                   voteAverage={movie.vote_average}
                   imageUrl={movie.poster_path}
+                  id={movie.id}
                 />
               );
             })}
           </div>
         </div>
       </section>
+
       <Footer></Footer>
     </div>
   );
 };
 
 export default Details;
+
+// slug
