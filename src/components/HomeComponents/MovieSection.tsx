@@ -37,7 +37,6 @@ const MovieSection = ({ title, bottom, route, page }: Movie1) => {
       .then((response) => response.json())
       .then((data) => setMovies(data));
   };
-  console.log(movies);
 
   return (
     <div className=" flex  container flex-col gap-8 px-5">

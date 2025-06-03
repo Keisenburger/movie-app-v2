@@ -18,19 +18,19 @@ import {
   DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 import { useEffect, useState } from "react";
-
-const url = "https://api.themoviedb.org/3/genre/movie/list?language=en";
+const searchUrl = `https://api.themoviedb.org/3/search/movie?query=${searchValue}&language=en-US&page=${page}`;
+const genresUrl = "https://api.themoviedb.org/3/genre/movie/list?language=en";
 const token =
   "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNjdkOGJlYmQwZjRmZjM0NWY2NTA1Yzk5ZTlkMDI4OSIsIm5iZiI6MTc0MjE3NTA4OS4zODksInN1YiI6IjY3ZDc3YjcxODVkMTM5MjFiNTAxNDE1ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.KxFMnZppBdHUSz_zB4p9A_gRD16I_R6OX1oiEe0LbE8";
 const Navigation = () => {
   const [data, setData] = useState([]);
-
+  const [searchValue, setSearchValue] = useState("");
   useEffect(() => {
     fetchGenreData();
   }, []);
 
   const fetchGenreData = () => {
-    fetch(url, { headers: { Authorization: `Bearer ${token}` } })
+    fetch(genresUrl, { headers: { Authorization: `Bearer ${token}` } })
       .then((response) => response.json())
       .then((data) => setData(data.genres));
   };
@@ -81,6 +81,10 @@ const Navigation = () => {
             type="text"
             placeholder="Search...."
             className=" focus:outline-0"
+            value={searchValue}
+            onChange={(e) => {
+              setSearchValue(e.target.value);
+            }}
           />
         </div>
       </div>
