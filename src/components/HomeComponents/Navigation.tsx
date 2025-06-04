@@ -18,22 +18,31 @@ import {
   DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 import { useEffect, useState } from "react";
-const searchUrl = `https://api.themoviedb.org/3/search/movie?query=${searchValue}&language=en-US&page=${page}`;
-const genresUrl = "https://api.themoviedb.org/3/genre/movie/list?language=en";
-const token =
-  "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNjdkOGJlYmQwZjRmZjM0NWY2NTA1Yzk5ZTlkMDI4OSIsIm5iZiI6MTc0MjE3NTA4OS4zODksInN1YiI6IjY3ZDc3YjcxODVkMTM5MjFiNTAxNDE1ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.KxFMnZppBdHUSz_zB4p9A_gRD16I_R6OX1oiEe0LbE8";
 const Navigation = () => {
-  const [data, setData] = useState([]);
   const [searchValue, setSearchValue] = useState("");
+  const [page, setPage] = useState(1);
+  const searchUrl = `https://api.themoviedb.org/3/search/movie?query=${searchValue}&language=en-US&page=${page}`;
+  const genresUrl = "https://api.themoviedb.org/3/genre/movie/list?language=en";
+  const token =
+    "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNjdkOGJlYmQwZjRmZjM0NWY2NTA1Yzk5ZTlkMDI4OSIsIm5iZiI6MTc0MjE3NTA4OS4zODksInN1YiI6IjY3ZDc3YjcxODVkMTM5MjFiNTAxNDE1ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.KxFMnZppBdHUSz_zB4p9A_gRD16I_R6OX1oiEe0LbE8";
+  const [genresData, setGenresData] = useState([]);
+  const [searchData, setSearchData] = useState([]);
   useEffect(() => {
     fetchGenreData();
-  }, []);
+    fetchSearchData();
+  }, [searchValue]);
 
   const fetchGenreData = () => {
     fetch(genresUrl, { headers: { Authorization: `Bearer ${token}` } })
       .then((response) => response.json())
-      .then((data) => setData(data.genres));
+      .then((data) => setGenresData(data.genres));
   };
+  const fetchSearchData = () => {
+    fetch(searchUrl, { headers: { Authorization: `Bearer ${token}` } })
+      .then((res) => res.json())
+      .then((data) => setSearchData(data));
+  };
+  console.log(searchData);
 
   return (
     <div className="h-[60px] flex justify-between items-center container px-5">
@@ -60,7 +69,7 @@ const Navigation = () => {
             </DropdownMenuLabel>
             <DropdownMenuSeparator className="my-4" />
             <DropdownMenuGroup className="flex gap-4 flex-wrap w-full">
-              {data?.map(({ id, name }) => {
+              {genresData?.map(({ id, name }) => {
                 return (
                   <DropdownMenuItem
                     className="bg-white text-black hover:bg-amber-50 border border-[#E4E4E7] w-fit"
@@ -86,6 +95,7 @@ const Navigation = () => {
               setSearchValue(e.target.value);
             }}
           />
+          <DropdownMenu></DropdownMenu>
         </div>
       </div>
       <button className="border cursor-pointer border-[#E4E4E7] h-9 w-9 rounded-md flex justify-center items-center">
