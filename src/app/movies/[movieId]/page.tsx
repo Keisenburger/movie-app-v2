@@ -89,12 +89,12 @@ const Details = async ({
             <img
               src={`https://image.tmdb.org/t/p/w300${singleMovie.poster_path}`}
               alt={singleMovie.title}
-              className="border w-[392px] h-[500px]"
+              className="border w-[392px] h-[500px] rounded-sm"
             />
             <img
               src={`https://image.tmdb.org/t/p/original${singleMovie.backdrop_path}`}
               alt={singleMovie.title}
-              className="border w-full h-[500px]"
+              className="border w-full h-[500px] rounded-sm"
             />
           </div>
           <div className="flex flex-col gap-5">

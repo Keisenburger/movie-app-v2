@@ -5,6 +5,7 @@ import {
   ChevronRight,
   ChevronUp,
   Search,
+  ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
@@ -18,10 +19,11 @@ import {
   DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 import { useEffect, useState } from "react";
+import { ClipLoader } from "react-spinners";
 const Navigation = () => {
   const [searchValue, setSearchValue] = useState("");
-  const [page, setPage] = useState(1);
-  const searchUrl = `https://api.themoviedb.org/3/search/movie?query=${searchValue}&language=en-US&page=${page}`;
+
+  const searchUrl = `https://api.themoviedb.org/3/search/movie?query=${searchValue}&language=en-US&page=1`;
   const genresUrl = "https://api.themoviedb.org/3/genre/movie/list?language=en";
   const token =
     "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNjdkOGJlYmQwZjRmZjM0NWY2NTA1Yzk5ZTlkMDI4OSIsIm5iZiI6MTc0MjE3NTA4OS4zODksInN1YiI6IjY3ZDc3YjcxODVkMTM5MjFiNTAxNDE1ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.KxFMnZppBdHUSz_zB4p9A_gRD16I_R6OX1oiEe0LbE8";
@@ -43,7 +45,11 @@ const Navigation = () => {
       .then((data) => setSearchData(data));
   };
   console.log(searchData);
-
+  const isResultThere = () => {
+    if (searchValue && searchData.results.length === 0) {
+      return true;
+    } else false;
+  };
   return (
     <div className="h-[60px] flex justify-between items-center container px-5">
       <Link href={"/"}>
@@ -84,7 +90,7 @@ const Navigation = () => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <div className="flex items-center gap-2.5 border px-3 rounded-md border-[#E4E4E7]">
+        <div className="flex items-center gap-2.5 border px-3 rounded-md border-[#E4E4E7] relative">
           <Search color="gray" />
           <input
             type="text"
@@ -95,7 +101,54 @@ const Navigation = () => {
               setSearchValue(e.target.value);
             }}
           />
-          <DropdownMenu></DropdownMenu>
+          {searchValue && (
+            <div className="absolute top-10 w-[577px] left-[-200px] h-fit border p-3 flex flex-col z-10 bg-white">
+              {searchData &&
+                searchData?.results?.slice(0, 5).map((movie) => {
+                  return (
+                    <div className="p-2 flex gap-4 w-full">
+                      <img
+                        src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+                        alt=""
+                        className="h-full w-[67px] border "
+                      />
+                      <div className="flex flex-col gap-3 w-full">
+                        <div>
+                          <p className="font-semibold text-xl">{movie.title}</p>
+                          <div className="flex gap-1 items-center">
+                            <img
+                              src="/images/star.png"
+                              alt="star"
+                              className="size-4"
+                            />
+                            <p className="text-[#09090B]">
+                              {Math.floor(movie.vote_average / 0.1) / 10}
+                              <span className="text-[#71717A] text-[12px]">
+                                /10
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex justify-between w-full  items-center">
+                          <p className="h-full">{movie.release_date}</p>
+                          <Link href={`/movies/${movie.id}`}>
+                            <button className="flex gap-2 cursor-pointer px-4 py-2 rounded-sm">
+                              <p>See more</p>
+                              <ArrowRight></ArrowRight>
+                            </button>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              {isResultThere() && (
+                <div className="flex h-[128px] items-center justify-center">
+                  No results found.
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
       <button className="border cursor-pointer border-[#E4E4E7] h-9 w-9 rounded-md flex justify-center items-center">
