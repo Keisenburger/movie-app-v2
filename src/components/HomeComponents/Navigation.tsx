@@ -1,4 +1,17 @@
 "use client";
+type Movie = {
+  title: string;
+  release_date: string;
+  adult: boolean;
+  runtime: string;
+  vote_average: number;
+  vote_count: number;
+  backdrop_path: string;
+  poster_path: string;
+  genres: { id: number; name: string }[];
+  overview: string;
+  production_companies: { id: number; name: string }[];
+};
 import {
   Moon,
   ChevronDown,
@@ -22,13 +35,12 @@ import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
 const Navigation = () => {
   const [searchValue, setSearchValue] = useState("");
-
   const searchUrl = `https://api.themoviedb.org/3/search/movie?query=${searchValue}&language=en-US&page=1`;
   const genresUrl = "https://api.themoviedb.org/3/genre/movie/list?language=en";
   const token =
     "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNjdkOGJlYmQwZjRmZjM0NWY2NTA1Yzk5ZTlkMDI4OSIsIm5iZiI6MTc0MjE3NTA4OS4zODksInN1YiI6IjY3ZDc3YjcxODVkMTM5MjFiNTAxNDE1ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.KxFMnZppBdHUSz_zB4p9A_gRD16I_R6OX1oiEe0LbE8";
   const [genresData, setGenresData] = useState([]);
-  const [searchData, setSearchData] = useState([]);
+  const [searchData, setSearchData] = useState<Movie>([]);
   useEffect(() => {
     fetchGenreData();
     fetchSearchData();
@@ -44,7 +56,7 @@ const Navigation = () => {
       .then((res) => res.json())
       .then((data) => setSearchData(data));
   };
-  console.log(searchData);
+
   const isResultThere = () => {
     if (searchValue && searchData.results.length === 0) {
       return true;
@@ -106,7 +118,7 @@ const Navigation = () => {
               {searchData &&
                 searchData?.results?.slice(0, 5).map((movie) => {
                   return (
-                    <div className="p-2 flex gap-4 w-full">
+                    <div className="p-2 flex gap-4 w-full" key={movie.id}>
                       <img
                         src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
                         alt=""

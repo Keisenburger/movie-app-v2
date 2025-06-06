@@ -32,6 +32,7 @@ import { useSecret } from "@/constants";
 import { Suspense } from "react";
 import Loading from "@/app/movies/[movieId]/loading";
 import Link from "next/link";
+import { log } from "console";
 
 const Details = async ({
   params,
@@ -39,17 +40,29 @@ const Details = async ({
   params: Promise<{ movieId: string }>;
 }) => {
   const { movieId } = await params;
-  const { singleMovieUrl, token, similiarMoviesUrl } = useSecret(movieId);
-
+  const { singleMovieUrl, token, similiarMoviesUrl, actorsUrl } =
+    useSecret(movieId);
   const singleMovieResponse = await fetch(singleMovieUrl, {
     headers: { Authorization: `Bearer ${token}` },
   });
   const singleMovie: Movie = await singleMovieResponse.json();
-
   const similiarMoviesResponse = await fetch(similiarMoviesUrl, {
     headers: { Authorization: `Bearer ${token}` },
   });
   const similiarMovies: MovieResponse = await similiarMoviesResponse.json();
+  const actorsResponse = await fetch(actorsUrl, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const actors = await actorsResponse.json();
+  console.log(
+    actors.crew.find((actor: any) => actor.known_for_department === "Writing")
+  );
+  const writers = actors.crew.filter(
+    (actor: any) => actor.known_for_department === "Writing"
+  );
+  const stars = actors.cast.filter((actor: any) => {
+    return actor.known_for_department === "Acting" && actor.order < 5;
+  });
 
   return (
     <div className="flex flex-col items-center ">
@@ -111,21 +124,37 @@ const Details = async ({
               })}
             </div>
             <p className="text-[16px] leading-6">{singleMovie.overview}</p>
-            <p className="text-[20px] font-bold ">Production Companies</p>
-            <div>
-              {singleMovie?.production_companies.map((company) => {
-                return (
-                  <div key={company.id}>
-                    <div className="flex gap-[53px]">
-                      <p className="text-[16px] font-bold w-16">
-                        №{company.id}
-                      </p>
-                      <p className="text-[16px]">{company.name}</p>
-                    </div>
-                    <DropdownMenuSeparator className="my-4" />
-                  </div>
-                );
-              })}
+
+            <div className="flex flex-col gap-4  text-[16px]">
+              <div className="flex gap-8">
+                <p className="w-16 font-bold">Director</p>
+                <p>
+                  {
+                    actors.crew.find((actor: any) => actor.job === "Director")
+                      .name
+                  }
+                </p>
+              </div>
+              <DropdownMenuSeparator className="my-2" />
+              <div className="flex gap-8">
+                <p className="w-16   font-bold">Writers</p>
+                <p>
+                  {writers.map((writer) => {
+                    return writer.name + " " + "·" + " ";
+                  })}
+                </p>
+              </div>
+              <DropdownMenuSeparator className="my-2" />
+
+              <div className="flex gap-8">
+                <p className="w-16   font-bold">Stars</p>
+                <p>
+                  {stars.map((star) => {
+                    return star.name + " " + "·" + " ";
+                  })}
+                </p>
+              </div>
+              <DropdownMenuSeparator className="my-2" />
             </div>
           </div>
           <div className="flex flex-col gap-8">
@@ -133,7 +162,7 @@ const Details = async ({
               <p className="text-[#09090B] text-2xl font-semibold">
                 More like this
               </p>
-              <Link href={"/see_more/similiar"}>
+              <Link href={`/see_more/${movieId}`}>
                 <button className=" cursor-pointer flex items-center gap-2 px-4 py-2 ">
                   <p>See more</p>
                   <ArrowRight />

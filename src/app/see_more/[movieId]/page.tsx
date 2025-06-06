@@ -1,13 +1,17 @@
 "use client";
+import Card from "@/components/HomeComponents/Card";
 import Footer from "@/components/HomeComponents/Footer";
 import MovieSection from "@/components/HomeComponents/MovieSection";
 import Navigation from "@/components/HomeComponents/Navigation";
+import React, { useEffect } from "react";
 import { useState } from "react";
-import { useParams } from "next/navigation";
-const Similiar = () => {
-  const params = useParams();
+
+const Similiar = ({ params }: { params: string }) => {
+  const id = React.use(params).movieId;
+
   const [bottom, setBottom] = useState(0);
   const [page, setPage] = useState(1);
+  const [movies, setMovies] = useState([]);
   const handlePrevious = () => {
     if (page !== 1) {
       if (bottom === 0) {
@@ -24,19 +28,42 @@ const Similiar = () => {
       setBottom(0);
     } else setBottom(bottom + 10);
   };
+
+  const url = ` https://api.themoviedb.org/3/movie/${id}/similar?language=en-US&page=${page}`;
+  const token =
+    "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNjdkOGJlYmQwZjRmZjM0NWY2NTA1Yzk5ZTlkMDI4OSIsIm5iZiI6MTc0MjE3NTA4OS4zODksInN1YiI6IjY3ZDc3YjcxODVkMTM5MjFiNTAxNDE1ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.KxFMnZppBdHUSz_zB4p9A_gRD16I_R6OX1oiEe0LbE8";
+  const fetchMovies = () => {
+    fetch(url, { headers: { Authorization: `Bearer ${token}` } })
+      .then((response) => response.json())
+      .then((data) => setMovies(data.results));
+  };
+  useEffect(() => {
+    fetchMovies();
+  }, [page]);
+  console.log(movies);
+
   return (
     <div>
       <div className="flex flex-col items-center">
         <Navigation></Navigation>
-
-        <section className="flex flex-col gap-13 mt-8 ">
-          <MovieSection
-            title="More Like This"
-            bottom={bottom}
-            route="similiar"
-            page={page}
-          ></MovieSection>
-        </section>
+        <div className="container flex flex-col gap-5 ">
+          <p className="text-3xl font-semibold">More Like This</p>
+          <div className=" grid sm:grid-cols-3 grid-cols-2 xl:grid-cols-5 md:grid-cols-4 auto-rows-auto gap-8">
+            {movies?.slice(bottom, bottom + 10).map((movie) => {
+              {
+                return (
+                  <Card
+                    key={movie.id}
+                    title={movie.title}
+                    voteAverage={movie.vote_average}
+                    imageUrl={movie.poster_path}
+                    id={movie.id}
+                  />
+                );
+              }
+            })}
+          </div>
+        </div>
         <div className="flex justify-end px-5 container gap-2">
           <button
             className="px-4 py-2 gap-2 cursor-pointer"
