@@ -12,6 +12,18 @@ type Movie = {
   overview: string;
   production_companies: { id: number; name: string }[];
 };
+type Movie2 = {
+  id: number;
+  title: string;
+  vote_average: number;
+  overview: string;
+  poster_path: string;
+  release_date: string;
+};
+
+type MovieResponse = {
+  results: Movie2[];
+};
 import {
   Moon,
   ChevronDown,
@@ -40,7 +52,7 @@ const Navigation = () => {
   const token =
     "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNjdkOGJlYmQwZjRmZjM0NWY2NTA1Yzk5ZTlkMDI4OSIsIm5iZiI6MTc0MjE3NTA4OS4zODksInN1YiI6IjY3ZDc3YjcxODVkMTM5MjFiNTAxNDE1ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.KxFMnZppBdHUSz_zB4p9A_gRD16I_R6OX1oiEe0LbE8";
   const [genresData, setGenresData] = useState([]);
-  const [searchData, setSearchData] = useState<Movie>([]);
+  const [searchData, setSearchData] = useState<MovieResponse>({ results: [] });
   useEffect(() => {
     fetchGenreData();
     fetchSearchData();
@@ -89,13 +101,15 @@ const Navigation = () => {
             <DropdownMenuGroup className="flex gap-4 flex-wrap w-full">
               {genresData?.map(({ id, name }) => {
                 return (
-                  <DropdownMenuItem
-                    className="bg-white text-black hover:bg-amber-50 border border-[#E4E4E7] w-fit"
-                    key={id}
-                  >
-                    <ChevronRight />
-                    {name}
-                  </DropdownMenuItem>
+                  <Link href={`/genres/${id}`} key={id}>
+                    <DropdownMenuItem
+                      className="bg-white text-black hover:bg-amber-50 border border-[#E4E4E7] w-fit rounded-full font-semibold"
+                      key={id}
+                    >
+                      {name}
+                      <ChevronRight />
+                    </DropdownMenuItem>
+                  </Link>
                 );
               })}
             </DropdownMenuGroup>
@@ -155,8 +169,8 @@ const Navigation = () => {
                   );
                 })}
               {isResultThere() && (
-                <div className="flex h-[128px] items-center justify-center">
-                  No results found.
+                <div className="flex justify-center">
+                  <ClipLoader></ClipLoader>
                 </div>
               )}
             </div>

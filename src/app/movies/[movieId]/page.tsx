@@ -32,7 +32,6 @@ import { useSecret } from "@/constants";
 import { Suspense } from "react";
 import Loading from "@/app/movies/[movieId]/loading";
 import Link from "next/link";
-import { log } from "console";
 
 const Details = async ({
   params,
@@ -114,12 +113,11 @@ const Details = async ({
             <div className="flex gap-3">
               {singleMovie?.genres?.map((genre) => {
                 return (
-                  <Badge
-                    className="bg-white text-[#09090B] border border-[#E4E4E7] rounded-full font-semibold"
-                    key={genre.id}
-                  >
-                    {genre.name}
-                  </Badge>
+                  <Link href={`/genres/${genre.id}`} key={genre.id}>
+                    <Badge className="bg-white text-[#09090B] border border-[#E4E4E7] rounded-full font-semibold">
+                      {genre.name}
+                    </Badge>
+                  </Link>
                 );
               })}
             </div>
@@ -139,7 +137,7 @@ const Details = async ({
               <div className="flex gap-8">
                 <p className="w-16   font-bold">Writers</p>
                 <p>
-                  {writers.map((writer) => {
+                  {writers.map((writer: { name: string }) => {
                     return writer.name + " " + "·" + " ";
                   })}
                 </p>
@@ -149,7 +147,7 @@ const Details = async ({
               <div className="flex gap-8">
                 <p className="w-16   font-bold">Stars</p>
                 <p>
-                  {stars.map((star) => {
+                  {stars.map((star: { name: string }) => {
                     return star.name + " " + "·" + " ";
                   })}
                 </p>

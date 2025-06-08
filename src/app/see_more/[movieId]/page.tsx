@@ -1,17 +1,18 @@
 "use client";
 import Card from "@/components/HomeComponents/Card";
 import Footer from "@/components/HomeComponents/Footer";
-import MovieSection from "@/components/HomeComponents/MovieSection";
 import Navigation from "@/components/HomeComponents/Navigation";
 import React, { useEffect } from "react";
 import { useState } from "react";
-
-const Similiar = ({ params }: { params: string }) => {
-  const id = React.use(params).movieId;
+import { useParams } from "next/navigation";
+import { MovieResponse } from "@/type";
+const Similiar = () => {
+  const params = useParams();
+  const id = params.movieId;
 
   const [bottom, setBottom] = useState(0);
   const [page, setPage] = useState(1);
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState<MovieResponse>();
   const handlePrevious = () => {
     if (page !== 1) {
       if (bottom === 0) {
@@ -40,7 +41,6 @@ const Similiar = ({ params }: { params: string }) => {
   useEffect(() => {
     fetchMovies();
   }, [page]);
-  console.log(movies);
 
   return (
     <div>
@@ -49,19 +49,28 @@ const Similiar = ({ params }: { params: string }) => {
         <div className="container flex flex-col gap-5 ">
           <p className="text-3xl font-semibold">More Like This</p>
           <div className=" grid sm:grid-cols-3 grid-cols-2 xl:grid-cols-5 md:grid-cols-4 auto-rows-auto gap-8">
-            {movies?.slice(bottom, bottom + 10).map((movie) => {
-              {
-                return (
-                  <Card
-                    key={movie.id}
-                    title={movie.title}
-                    voteAverage={movie.vote_average}
-                    imageUrl={movie.poster_path}
-                    id={movie.id}
-                  />
-                );
-              }
-            })}
+            {movies
+              ?.slice(bottom, bottom + 10)
+              .map(
+                (movie: {
+                  id: number;
+                  title: string;
+                  vote_average: number;
+                  poster_path: string;
+                }) => {
+                  {
+                    return (
+                      <Card
+                        key={movie.id}
+                        title={movie.title}
+                        voteAverage={movie.vote_average}
+                        imageUrl={movie.poster_path}
+                        id={movie.id}
+                      />
+                    );
+                  }
+                }
+              )}
           </div>
         </div>
         <div className="flex justify-end px-5 container gap-2">
