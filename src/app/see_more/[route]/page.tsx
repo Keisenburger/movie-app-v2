@@ -2,8 +2,11 @@
 import Footer from "@/components/HomeComponents/Footer";
 import MovieSection from "@/components/HomeComponents/MovieSection";
 import Navigation from "@/components/HomeComponents/Navigation";
+import { useParams } from "next/navigation";
 import { useState } from "react";
-const Popular = () => {
+const Upcoming = () => {
+  const params: { route: string } = useParams();
+  const route = params.route;
   const [bottom, setBottom] = useState(0);
   const [page, setPage] = useState(1);
   const handlePrevious = () => {
@@ -29,50 +32,17 @@ const Popular = () => {
 
         <section className="flex flex-col gap-13 mt-8 ">
           <MovieSection
-            title="Popular"
+            title="Upcoming"
             bottom={bottom}
-            route="popular"
+            route={route}
             page={page}
           ></MovieSection>
         </section>
-        <div className="flex justify-end px-5 container gap-2">
-          <button
-            className="px-4 py-2 gap-2 cursor-pointer"
-            onClick={() => {
-              handlePrevious();
-            }}
-          >
-            Previous
-          </button>
-          <button
-            className="p-2.5 cursor-pointer"
-            onClick={() => {
-              setBottom(0);
-            }}
-          >
-            1
-          </button>
-          <button
-            className="p-2.5 cursor-pointer"
-            onClick={() => {
-              setBottom(10);
-            }}
-          >
-            2
-          </button>
-          <button
-            className="px-4 py-2 gap-2 cursor-pointer"
-            onClick={() => {
-              handleNext();
-            }}
-          >
-            Next
-          </button>
-        </div>
+
         <Footer></Footer>
       </div>
     </div>
   );
 };
 
-export default Popular;
+export default Upcoming;
