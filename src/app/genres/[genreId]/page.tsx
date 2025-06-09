@@ -8,12 +8,11 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import Pagintaion from "@/components/HomeComponents/Pagination";
+
 import { Genre, MovieSection } from "@/type";
 const GenreSearch = () => {
   const params = useParams();
-  const x = params?.genreId;
-  const [genreId, setGenreId] = useState(x);
+  const genreId = params?.genreId;
 
   const [page, setPage] = useState(1);
 
@@ -119,7 +118,42 @@ const GenreSearch = () => {
                 );
               })}
             </div>
-            <Pagintaion></Pagintaion>
+            <div className="flex justify-end px-5 container gap-2">
+              <button
+                className="px-4 py-2 gap-2 cursor-pointer flex items-center"
+                onClick={() => {
+                  handlePrevious();
+                }}
+              >
+                <ChevronLeft></ChevronLeft>
+                Previous
+              </button>
+              <button
+                className="p-2.5 cursor-pointer"
+                onClick={() => {
+                  setBottom(0);
+                }}
+              >
+                1
+              </button>
+              <button
+                className="p-2.5 cursor-pointer"
+                onClick={() => {
+                  setBottom(10);
+                }}
+              >
+                2
+              </button>
+              <button
+                className="px-4 py-2 gap-2 cursor-pointer flex items-center"
+                onClick={() => {
+                  handleNext();
+                }}
+              >
+                Next
+                <ChevronRight></ChevronRight>
+              </button>
+            </div>
           </section>
         </div>
       </section>
