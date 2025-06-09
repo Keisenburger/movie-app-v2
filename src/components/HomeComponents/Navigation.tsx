@@ -73,7 +73,7 @@ const Navigation = () => {
   const isResultThere = () => {
     if (searchValue && searchData.results.length === 0) {
       return true;
-    } else false;
+    } else return false;
   };
   return (
     <div className="h-[60px] flex justify-between items-center container px-5">
