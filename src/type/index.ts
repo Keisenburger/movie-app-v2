@@ -30,3 +30,10 @@ export type Genre = {
   id: number;
   name: string;
 };
+
+export type PaginationType = {
+  bottom: number;
+  setBottom: Function;
+  setPage: Function;
+  page: number;
+};

@@ -53,9 +53,7 @@ const Details = async ({
     headers: { Authorization: `Bearer ${token}` },
   });
   const actors = await actorsResponse.json();
-  console.log(
-    actors.crew.find((actor: any) => actor.known_for_department === "Writing")
-  );
+
   const writers = actors.crew.filter(
     (actor: any) => actor.known_for_department === "Writing"
   );
@@ -160,7 +158,7 @@ const Details = async ({
               <p className="text-[#09090B] text-2xl font-semibold">
                 More like this
               </p>
-              <Link href={`/see_more/${movieId}`}>
+              <Link href={`/similiar/${movieId}`}>
                 <button className=" cursor-pointer flex items-center gap-2 px-4 py-2 ">
                   <p>See more</p>
                   <ArrowRight />

@@ -23,6 +23,7 @@ const Home = () => {
               bottom={section.bottom}
               route={section.route}
               page={1}
+              isSeeMoreActive
             ></MovieSection>
           );
         })}

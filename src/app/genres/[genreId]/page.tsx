@@ -4,12 +4,13 @@ import Card from "@/components/HomeComponents/Card";
 import Footer from "@/components/HomeComponents/Footer";
 import Navigation from "@/components/HomeComponents/Navigation";
 import { SelectSeparator } from "@/components/ui/select";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
 import { Genre, MovieSection } from "@/type";
+import Pagination from "@/components/HomeComponents/Pagination";
 const GenreSearch = () => {
   const params = useParams();
   const genreId = params?.genreId;
@@ -21,22 +22,7 @@ const GenreSearch = () => {
   const [genres, setGenres] = useState<Genre[]>([]);
   const [movies, setMovies] = useState<MovieSection[]>([]);
   const [bottom, setBottom] = useState(0);
-  const handlePrevious = () => {
-    if (page !== 1) {
-      if (bottom === 0) {
-        setBottom(10);
-        setPage(page - 1);
-      } else {
-        setBottom(bottom - 10);
-      }
-    } else if (bottom === 10) setBottom(0);
-  };
-  const handleNext = () => {
-    if (bottom === 10) {
-      setPage(page + 1);
-      setBottom(0);
-    } else setBottom(bottom + 10);
-  };
+
   useEffect(() => {
     const fetchGenres = async () => {
       try {
@@ -118,42 +104,12 @@ const GenreSearch = () => {
                 );
               })}
             </div>
-            <div className="flex justify-end px-5 container gap-2">
-              <button
-                className="px-4 py-2 gap-2 cursor-pointer flex items-center"
-                onClick={() => {
-                  handlePrevious();
-                }}
-              >
-                <ChevronLeft></ChevronLeft>
-                Previous
-              </button>
-              <button
-                className="p-2.5 cursor-pointer"
-                onClick={() => {
-                  setBottom(0);
-                }}
-              >
-                1
-              </button>
-              <button
-                className="p-2.5 cursor-pointer"
-                onClick={() => {
-                  setBottom(10);
-                }}
-              >
-                2
-              </button>
-              <button
-                className="px-4 py-2 gap-2 cursor-pointer flex items-center"
-                onClick={() => {
-                  handleNext();
-                }}
-              >
-                Next
-                <ChevronRight></ChevronRight>
-              </button>
-            </div>
+            <Pagination
+              bottom={bottom}
+              setBottom={setBottom}
+              setPage={setPage}
+              page={page}
+            ></Pagination>
           </section>
         </div>
       </section>
