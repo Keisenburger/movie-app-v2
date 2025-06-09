@@ -1,4 +1,10 @@
 "use client";
+type Movie = {
+  id: number;
+  title: string;
+  vote_average: number;
+  poster_path: string;
+};
 import Card from "@/components/HomeComponents/Card";
 import Footer from "@/components/HomeComponents/Footer";
 import Navigation from "@/components/HomeComponents/Navigation";
@@ -13,7 +19,7 @@ const Similiar = () => {
 
   const [bottom, setBottom] = useState(0);
   const [page, setPage] = useState(1);
-  const [movies, setMovies] = useState<MovieResponse>();
+  const [movies, setMovies] = useState<Movie[]>();
 
   const url = ` https://api.themoviedb.org/3/movie/${id}/similar?language=en-US&page=${page}`;
   const token =

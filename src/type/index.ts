@@ -22,7 +22,6 @@ export type MovieSection = {
 };
 
 export type MovieResponse = {
-  slice: React.Dispatch<React.SetStateAction<number>>;
   results: MovieSection[];
 };
 
