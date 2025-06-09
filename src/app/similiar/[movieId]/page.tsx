@@ -11,7 +11,6 @@ import Navigation from "@/components/HomeComponents/Navigation";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "next/navigation";
-import { MovieResponse } from "@/type";
 import Pagination from "@/components/HomeComponents/Pagination";
 const Similiar = () => {
   const params = useParams();
