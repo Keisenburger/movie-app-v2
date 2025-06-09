@@ -53,9 +53,11 @@ const Navigation = () => {
   const [genresData, setGenresData] = useState([]);
   const [searchData, setSearchData] = useState<MovieResponse>({ results: [] });
   useEffect(() => {
-    fetchGenreData();
     fetchSearchData();
   }, [searchValue]);
+  useEffect(() => {
+    fetchGenreData();
+  }, []);
 
   const fetchGenreData = () => {
     fetch(genresUrl, { headers: { Authorization: `Bearer ${token}` } })

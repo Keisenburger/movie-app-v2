@@ -129,8 +129,9 @@ const Details = async ({
                 <p className="w-16 font-bold">Director</p>
                 <p>
                   {
-                    actors.crew.find((actor: any) => actor.job === "Director")
-                      .name
+                    actors.crew.find(
+                      (actor: { job: string }) => actor.job === "Director"
+                    ).name
                   }
                 </p>
               </div>

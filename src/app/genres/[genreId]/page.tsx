@@ -89,7 +89,7 @@ const GenreSearch = () => {
           <SelectSeparator></SelectSeparator>
           <section className="flex flex-col gap-8">
             <p className="text-[20px] font-semibold">
-              Titles in "{currentGenre?.name}"
+              Titles in {currentGenre?.name}
             </p>
             <div className=" grid sm:grid-cols-3 grid-cols-2  md:grid-cols-4 auto-rows-auto gap-8">
               {movies.slice(bottom, bottom + 10).map((movie) => {
