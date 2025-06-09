@@ -1,17 +1,17 @@
 "use client";
-type Movie = {
-  title: string;
-  release_date: string;
-  adult: boolean;
-  runtime: string;
-  vote_average: number;
-  vote_count: number;
-  backdrop_path: string;
-  poster_path: string;
-  genres: { id: number; name: string }[];
-  overview: string;
-  production_companies: { id: number; name: string }[];
-};
+// type Movie = {
+//   title: string;
+//   release_date: string;
+//   adult: boolean;
+//   runtime: string;
+//   vote_average: number;
+//   vote_count: number;
+//   backdrop_path: string;
+//   poster_path: string;
+//   genres: { id: number; name: string }[];
+//   overview: string;
+//   production_companies: { id: number; name: string }[];
+// };
 type Movie2 = {
   id: number;
   title: string;
@@ -28,7 +28,6 @@ import {
   Moon,
   ChevronDown,
   ChevronRight,
-  ChevronUp,
   Search,
   ArrowRight,
 } from "lucide-react";

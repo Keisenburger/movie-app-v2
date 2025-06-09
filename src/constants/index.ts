@@ -1,4 +1,4 @@
-export const useSecret = (id: string) => {
+export const Secret = (id: string) => {
   return {
     singleMovieUrl: `https://api.themoviedb.org/3/movie/${id}?language=en-US`,
     similiarMoviesUrl: `https://api.themoviedb.org/3/movie/${id}/similar?language=en-US&page=1`,

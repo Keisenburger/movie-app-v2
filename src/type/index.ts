@@ -22,7 +22,7 @@ export type MovieSection = {
 };
 
 export type MovieResponse = {
-  slice: any;
+  slice: Function;
   results: MovieSection[];
 };
 
@@ -33,7 +33,7 @@ export type Genre = {
 
 export type PaginationType = {
   bottom: number;
-  setBottom: Function;
-  setPage: Function;
+  setBottom: React.Dispatch<React.SetStateAction<number>>;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
   page: number;
 };

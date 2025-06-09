@@ -28,7 +28,7 @@ import { Badge } from "@/components/ui/badge";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { ArrowRight } from "lucide-react";
 import Card from "@/components/HomeComponents/Card";
-import { useSecret } from "@/constants";
+import { Secret } from "@/constants";
 import { Suspense } from "react";
 import Loading from "@/app/movies/[movieId]/loading";
 import Link from "next/link";
@@ -40,7 +40,7 @@ const Details = async ({
 }) => {
   const { movieId } = await params;
   const { singleMovieUrl, token, similiarMoviesUrl, actorsUrl } =
-    useSecret(movieId);
+    Secret(movieId);
   const singleMovieResponse = await fetch(singleMovieUrl, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -55,11 +55,14 @@ const Details = async ({
   const actors = await actorsResponse.json();
 
   const writers = actors.crew.filter(
-    (actor: any) => actor.known_for_department === "Writing"
+    (actor: { known_for_department: string }) =>
+      actor.known_for_department === "Writing"
   );
-  const stars = actors.cast.filter((actor: any) => {
-    return actor.known_for_department === "Acting" && actor.order < 5;
-  });
+  const stars = actors.cast.filter(
+    (actor: { order: number; known_for_department: string }) => {
+      return actor.known_for_department === "Acting" && actor.order < 5;
+    }
+  );
 
   return (
     <div className="flex flex-col items-center ">
