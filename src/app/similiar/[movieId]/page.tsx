@@ -11,12 +11,13 @@ import { SimiliarMovie } from "@/type";
 import { similiarPageUrl, token } from "@/constants";
 const Similiar = () => {
   const params = useParams();
-  const id = params.SimiliarMovieId;
+  const id = params.movieId;
 
   const [bottom, setBottom] = useState(0);
   const [page, setPage] = useState(1);
-  const [movies, setMovies] = useState<SimiliarMovie[]>();
+  const [movies, setMovies] = useState<SimiliarMovie[]>([]);
   const { similiarMovieUrl } = similiarPageUrl(id, page);
+
   const fetchMovies = () => {
     fetch(similiarMovieUrl, { headers: { Authorization: `Bearer ${token}` } })
       .then((response) => response.json())
