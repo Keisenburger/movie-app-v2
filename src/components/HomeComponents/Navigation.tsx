@@ -1,29 +1,5 @@
 "use client";
-// type Movie = {
-//   title: string;
-//   release_date: string;
-//   adult: boolean;
-//   runtime: string;
-//   vote_average: number;
-//   vote_count: number;
-//   backdrop_path: string;
-//   poster_path: string;
-//   genres: { id: number; name: string }[];
-//   overview: string;
-//   production_companies: { id: number; name: string }[];
-// };
-type Movie2 = {
-  id: number;
-  title: string;
-  vote_average: number;
-  overview: string;
-  poster_path: string;
-  release_date: string;
-};
 
-type MovieResponse = {
-  results: Movie2[];
-};
 import {
   Moon,
   ChevronDown,
@@ -33,6 +9,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { navigationUrl, token } from "@/constants";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -44,12 +21,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
+import { MovieResponse } from "@/type";
 const Navigation = () => {
   const [searchValue, setSearchValue] = useState("");
-  const searchUrl = `https://api.themoviedb.org/3/search/movie?query=${searchValue}&language=en-US&page=1`;
-  const genresUrl = "https://api.themoviedb.org/3/genre/movie/list?language=en";
-  const token =
-    "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNjdkOGJlYmQwZjRmZjM0NWY2NTA1Yzk5ZTlkMDI4OSIsIm5iZiI6MTc0MjE3NTA4OS4zODksInN1YiI6IjY3ZDc3YjcxODVkMTM5MjFiNTAxNDE1ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.KxFMnZppBdHUSz_zB4p9A_gRD16I_R6OX1oiEe0LbE8";
+  const { searchUrl, genresUrl } = navigationUrl(searchValue);
+
   const [genresData, setGenresData] = useState([]);
   const [searchData, setSearchData] = useState<MovieResponse>({ results: [] });
   useEffect(() => {
@@ -104,7 +80,7 @@ const Navigation = () => {
                 return (
                   <Link href={`/genres/${id}`} key={id}>
                     <DropdownMenuItem
-                      className="bg-white text-black hover:bg-amber-50 border border-[#E4E4E7] w-fit rounded-full font-semibold"
+                      className="bg-white cursor-pointer text-black hover:bg-amber-50 border border-[#E4E4E7] w-fit rounded-full font-semibold"
                       key={id}
                     >
                       {name}
@@ -133,7 +109,10 @@ const Navigation = () => {
               {searchData &&
                 searchData?.results?.slice(0, 5).map((movie) => {
                   return (
-                    <div className="p-2 flex gap-4 w-full" key={movie.id}>
+                    <div
+                      className="p-2 flex gap-4 w-full hover:bg-[#e3e2e2]"
+                      key={movie.id}
+                    >
                       <img
                         src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
                         alt=""

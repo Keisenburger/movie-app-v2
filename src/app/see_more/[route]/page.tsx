@@ -13,10 +13,10 @@ const Upcoming = () => {
 
   return (
     <div>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center gap-8">
         <Navigation></Navigation>
 
-        <section className="flex flex-col gap-13 mt-8 ">
+        <section className="flex flex-col gap-13 container">
           <MovieSection
             title={route}
             bottom={bottom}

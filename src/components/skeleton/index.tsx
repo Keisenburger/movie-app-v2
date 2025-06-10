@@ -65,3 +65,23 @@ export const DetailLoader = () => {
     </div>
   );
 };
+
+export const GenreLoader = () => {
+  return (
+    <div className="w-full flex flex-col gap-8">
+      <Skeleton className="h-7 w-[200px]"></Skeleton>
+      <div className="grid grid-cols-4 gap-8">
+        <Skeleton className="h-[400px]"></Skeleton>
+        <Skeleton className="h-[400px]"></Skeleton>
+        <Skeleton className="h-[400px]"></Skeleton>
+        <Skeleton className="h-[400px]"></Skeleton>
+        <Skeleton className="h-[400px]"></Skeleton>
+        <Skeleton className="h-[400px]"></Skeleton>
+        <Skeleton className="h-[400px]"></Skeleton>
+        <Skeleton className="h-[400px]"></Skeleton>
+        <Skeleton className="h-[400px]"></Skeleton>
+        <Skeleton className="h-[400px]"></Skeleton>
+      </div>
+    </div>
+  );
+};

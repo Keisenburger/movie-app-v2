@@ -1,16 +1,13 @@
+import { MovieCard } from "@/type";
 import Link from "next/link";
-
-type MovieCard = {
-  title: string;
-  imageUrl: string;
-  voteAverage: number;
-  id: number;
-};
 
 const Card = ({ title, imageUrl, voteAverage, id }: MovieCard) => {
   return (
-    <Link href={`/movies/${id}`}>
-      <div className="h-fit  rounded-md hover:transition-all hover:translate-z-1.5  hover:transform duration-150">
+    <Link
+      href={`/movies/${id}`}
+      className="hover:transform-border hover:scale-110 transition-all duration-125"
+    >
+      <div className="h-fit  rounded-md hover:transition-all hover:scale-3d  hover:transform duration-150">
         <img
           src={`https://image.tmdb.org/t/p/w300${imageUrl}`}
           alt={title}

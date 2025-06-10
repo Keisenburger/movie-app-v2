@@ -36,3 +36,35 @@ export type PaginationType = {
   setPage: React.Dispatch<React.SetStateAction<number>>;
   page: number;
 };
+
+export type Movie = {
+  title: string;
+  release_date: string;
+  adult: boolean;
+  runtime: string;
+  vote_average: number;
+  vote_count: number;
+  backdrop_path: string;
+  poster_path: string;
+  genres: { id: number; name: string }[];
+  overview: string;
+  production_companies: { id: number; name: string }[];
+};
+export type SimiliarMovie = {
+  id: number;
+  title: string;
+  vote_average: number;
+  overview: string;
+  poster_path: string;
+};
+
+export type MovieResponseSimiliar = {
+  results: SimiliarMovie[];
+};
+
+export type MovieCard = {
+  title: string;
+  imageUrl: string;
+  voteAverage: number;
+  id: number;
+};

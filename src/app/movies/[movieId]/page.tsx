@@ -1,37 +1,14 @@
-type Movie = {
-  title: string;
-  release_date: string;
-  adult: boolean;
-  runtime: string;
-  vote_average: number;
-  vote_count: number;
-  backdrop_path: string;
-  poster_path: string;
-  genres: { id: number; name: string }[];
-  overview: string;
-  production_companies: { id: number; name: string }[];
-};
-type SimiliarMovie = {
-  id: number;
-  title: string;
-  vote_average: number;
-  overview: string;
-  poster_path: string;
-};
-
-type MovieResponse = {
-  results: SimiliarMovie[];
-};
 import Navigation from "@/components/HomeComponents/Navigation";
 import Footer from "@/components/HomeComponents/Footer";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { ArrowRight } from "lucide-react";
 import Card from "@/components/HomeComponents/Card";
-import { Secret } from "@/constants";
+import { movieDetailUrl, token } from "@/constants";
 import { Suspense } from "react";
 import Loading from "@/app/movies/[movieId]/loading";
 import Link from "next/link";
+import { Movie, MovieResponseSimiliar } from "@/type";
 
 const Details = async ({
   params,
@@ -39,8 +16,8 @@ const Details = async ({
   params: Promise<{ movieId: string }>;
 }) => {
   const { movieId } = await params;
-  const { singleMovieUrl, token, similiarMoviesUrl, actorsUrl } =
-    Secret(movieId);
+  const { singleMovieUrl, similiarMoviesUrl, actorsUrl } =
+    movieDetailUrl(movieId);
   const singleMovieResponse = await fetch(singleMovieUrl, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -48,7 +25,8 @@ const Details = async ({
   const similiarMoviesResponse = await fetch(similiarMoviesUrl, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  const similiarMovies: MovieResponse = await similiarMoviesResponse.json();
+  const similiarMovies: MovieResponseSimiliar =
+    await similiarMoviesResponse.json();
   const actorsResponse = await fetch(actorsUrl, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -185,7 +163,6 @@ const Details = async ({
           </div>
         </section>
       </Suspense>
-
       <Footer></Footer>
     </div>
   );
